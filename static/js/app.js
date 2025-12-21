@@ -73,6 +73,21 @@ sendBtn.addEventListener("click", send);
 async function send() {
     let auth = null;
 
+    // Validate URL first
+    if (!url.value || url.value.trim() === "") {
+        statusIndicator.className = "status-indicator error";
+        statusText.textContent = "Validation Error";
+        responseBodyEl.textContent = "Error: URL is required";
+        responseHeadersEl.textContent = "";
+
+        // Clear empty state
+        const emptyState = document.querySelector(".empty-state");
+        if (emptyState) {
+            emptyState.style.display = "none";
+        }
+        return;
+    }
+
     if (authTypeEl.value === "basic") {
         auth = {
             type: "basic",
@@ -92,7 +107,16 @@ async function send() {
         try {
             jsonBody = JSON.parse(body.value);
         } catch (e) {
-            alert("Invalid JSON: " + e.message);
+            statusIndicator.className = "status-indicator error";
+            statusText.textContent = "JSON Parse Error";
+            responseBodyEl.textContent = "Invalid JSON: " + e.message;
+            responseHeadersEl.textContent = "";
+
+            // Clear empty state
+            const emptyState = document.querySelector(".empty-state");
+            if (emptyState) {
+                emptyState.style.display = "none";
+            }
             return;
         }
     }
