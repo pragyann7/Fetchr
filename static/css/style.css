@@ -3,10 +3,10 @@
     --bg-secondary: #151925;
     --bg-card: #1a1f2e;
     --border: #2a3142;
-    --text-primary: #e2e8f0;
-    --text-secondary: #94a3b8;
-    --accent: #10b981;
-    --accent-hover: #059669;
+    --text-primary: #ffffff;
+    --text-secondary: #ffffff;
+    --accent: #323d46;
+    --accent-hover: #08345a;
     --success: #10b981;
     --error: #ef4444;
     --warning: #f59e0b;
@@ -44,13 +44,25 @@ body {
 .header h1 {
     font-size: 32px;
     font-weight: 700;
-    color: var(--accent);
+    color: var(--text-primary);
     margin-bottom: 8px;
 }
 
 .header p {
     color: var(--text-secondary);
     font-size: 14px;
+    font-weight: 500;
+    margin: 0;
+    letter-spacing: 0.3px;
+}
+
+.header strong {
+    font-size: 22px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header span {
+    font-size: 20px;
 }
 
 .main-grid {
@@ -80,7 +92,7 @@ body {
 }
 
 .card:hover {
-    border-color: rgba(16, 185, 129, 0.3);
+    border-color: rgba(15, 76, 129, 0.18);
     box-shadow: var(--shadow-lg);
 }
 
@@ -102,8 +114,8 @@ body {
 .badge {
     display: inline-block;
     padding: 2px 8px;
-    background: rgba(16, 185, 129, 0.08);
-    color: var(--accent);
+    background: rgba(137, 144, 150, 0.612);
+    color: white;
     border-radius: 4px;
     font-size: 11px;
     font-weight: 600;
@@ -153,7 +165,7 @@ select:focus,
 textarea:focus {
     outline: none;
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.12);
 }
 
 textarea {
@@ -194,12 +206,12 @@ select {
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    box-shadow: 0 4px 12px rgba(15, 76, 129, 0.22);
 }
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    box-shadow: 0 6px 20px rgba(15, 76, 129, 0.32);
 }
 
 .btn-primary:active {
@@ -236,7 +248,7 @@ select {
 
 .tab-btn:hover {
     color: var(--text-primary);
-    background: rgba(16, 185, 129, 0.08);
+    background: rgba(15, 76, 129, 0.06);
 }
 
 .tab-btn.active {
@@ -270,25 +282,25 @@ select {
 
 /* JSON syntax highlighting */
 .json-key {
-    color: #f59e0b;
+    color: #60a5fa;
     font-weight: 700;
 }
 
 .json-string {
-    color: #34d399;
+    color: #7dd3fc;
 }
 
 .json-number {
-    color: #60a5fa;
+    color: #38bdf8;
 }
 
 .json-boolean {
-    color: #f97316;
+    color: #60a5fa;
     font-weight: 600;
 }
 
 .json-null {
-    color: #f87171;
+    color: #93c5fd;
     font-weight: 600;
 }
 
@@ -317,7 +329,6 @@ select {
     flex: 1;
 }
 
-
 .tab-content::-webkit-scrollbar {
     width: 8px;
 }
@@ -333,9 +344,10 @@ select {
 }
 
 .tab-content::-webkit-scrollbar-thumb:hover {
-    background: rgba(16, 185, 129, 0.5);
+    background: rgba(15, 76, 129, 0.45);
 }
 
+/* Status Indicator Styles - IMPORTANT: Keep this order */
 .status-indicator {
     display: inline-flex;
     align-items: center;
@@ -346,27 +358,38 @@ select {
     border-radius: 6px;
     font-size: 12px;
     font-weight: 600;
-    color: var(--text-secondary);
-}
-
-.status-indicator.success {
-    background: rgba(16, 185, 129, 0.1);
-    border-color: rgba(16, 185, 129, 0.3);
-    color: var(--success);
-}
-
-.status-indicator.error {
-    background: rgba(239, 68, 68, 0.1);
-    border-color: rgba(239, 68, 68, 0.3);
-    color: var(--error);
+    color: #94a3b8;
+    transition: all 0.3s ease;
 }
 
 .status-dot {
     width: 6px;
     height: 6px;
-    background: currentColor;
+    background: #94a3b8;
     border-radius: 50%;
     animation: pulse 2s ease-in-out infinite;
+}
+
+/* Success State */
+.status-indicator.success {
+    background: rgba(16, 185, 129, 0.15) !important;
+    border: 1px solid rgba(16, 185, 129, 0.4) !important;
+    color: #10b981 !important;
+}
+
+.status-indicator.success .status-dot {
+    background: #10b981 !important;
+}
+
+/* Error State */
+.status-indicator.error {
+    background: rgba(239, 68, 68, 0.15) !important;
+    border: 1px solid rgba(239, 68, 68, 0.5) !important;
+    color: #ef4444 !important;
+}
+
+.status-indicator.error .status-dot {
+    background: #ef4444 !important;
 }
 
 @keyframes pulse {
