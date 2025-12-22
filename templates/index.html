@@ -34,8 +34,40 @@
                             </select>
                             <input id="url" type="text" placeholder="http://127.0.0.1:8000/api/example">
                         </div>
-                      </div>
-                      <button id="sendBtn" class="btn-primary">Send Request</button>
+                    </div>
+                    <button id="sendBtn" class="btn-primary">Send Request</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Query Parameters</h3>
+                        <button class="btn-add" id="addQueryParam">+ Add</button>
+                    </div>
+                    
+                    <div id="queryParamsContainer" class="params-container">
+                        <div class="param-row">
+                            <input type="checkbox" class="param-enabled" checked>
+                            <input type="text" class="param-key" placeholder="Key">
+                            <input type="text" class="param-value" placeholder="Value">
+                            <button class="btn-remove" title="Remove">×</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Headers</h3>
+                        <button class="btn-add" id="addHeader">+ Add</button>
+                    </div>
+                    
+                    <div id="headersContainer" class="params-container">
+                        <div class="param-row">
+                            <input type="checkbox" class="param-enabled" checked>
+                            <input type="text" class="param-key" placeholder="Key">
+                            <input type="text" class="param-value" placeholder="Value">
+                            <button class="btn-remove" title="Remove">×</button>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="card">
@@ -67,7 +99,6 @@
                     
                     <textarea id="body" placeholder='{ "key": "value",  "data": "example" }'></textarea>
                 </div>
-
             </div>
 
             <div class="section">
