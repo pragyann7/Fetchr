@@ -126,6 +126,10 @@ body {
     margin-bottom: 16px;
 }
 
+.request-tab-content .form-group {
+    margin-bottom: 0;
+}
+
 .form-label {
     display: block;
     font-size: 13px;
@@ -172,7 +176,12 @@ textarea {
     font-family: 'Courier New', monospace;
     font-size: 13px;
     resize: vertical;
-    min-height: 140px;
+    min-height: 200px;
+}
+
+#body {
+    min-height: 180px;
+    height: 180px;
 }
 
 select {
@@ -187,10 +196,83 @@ select {
 .auth-fields {
     display: grid;
     gap: 12px;
+    margin-top: 12px;
 }
 
 .auth-fields input {
     display: none;
+}
+
+/* Query Parameters Styles */
+.params-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.param-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 36px;
+    gap: 8px;
+    align-items: center;
+}
+
+.param-key,
+.param-value {
+    width: 100%;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+.param-key:focus,
+.param-value:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.12);
+}
+
+.btn-add {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-add:hover {
+    background: rgba(16, 185, 129, 0.2);
+    border-color: rgba(16, 185, 129, 0.5);
+}
+
+.btn-remove {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--error);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.btn-remove:hover {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.5);
 }
 
 .btn-primary {
@@ -254,6 +336,50 @@ select {
 .tab-btn.active {
     background: var(--accent);
     color: white;
+}
+
+/* Request Tabs */
+.request-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+    padding: 4px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+}
+
+.request-tab-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 8px 12px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.request-tab-btn:hover {
+    color: var(--text-primary);
+    background: rgba(15, 76, 129, 0.06);
+}
+
+.request-tab-btn.active {
+    background: var(--accent);
+    color: white;
+}
+
+.request-tab-content {
+    min-height: 200px;
+}
+
+.tab-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
 }
 
 .tab-content {
@@ -347,7 +473,6 @@ select {
     background: rgba(15, 76, 129, 0.45);
 }
 
-/* Status Indicator Styles - IMPORTANT: Keep this order */
 .status-indicator {
     display: inline-flex;
     align-items: center;
@@ -370,7 +495,6 @@ select {
     animation: pulse 2s ease-in-out infinite;
 }
 
-/* Success State */
 .status-indicator.success {
     background: rgba(16, 185, 129, 0.15) !important;
     border: 1px solid rgba(16, 185, 129, 0.4) !important;
@@ -381,7 +505,6 @@ select {
     background: #10b981 !important;
 }
 
-/* Error State */
 .status-indicator.error {
     background: rgba(239, 68, 68, 0.15) !important;
     border: 1px solid rgba(239, 68, 68, 0.5) !important;
