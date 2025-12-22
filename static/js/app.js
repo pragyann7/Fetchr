@@ -67,26 +67,111 @@ function toggleAuthFields() {
 authTypeEl.addEventListener("change", toggleAuthFields);
 toggleAuthFields(); // initial
 
+// Query Parameters Management
+const queryParamsContainer = document.getElementById("queryParamsContainer");
+const addQueryParamBtn = document.getElementById("addQueryParam");
+
+// Headers Management
+const headersContainer = document.getElementById("headersContainer");
+const addHeaderBtn = document.getElementById("addHeader");
+
+// Add new query parameter row
+addQueryParamBtn.addEventListener("click", () => {
+    const newRow = document.createElement("div");
+    newRow.className = "param-row";
+    newRow.innerHTML = `
+        <input type="checkbox" class="param-enabled" checked>
+        <input type="text" class="param-key" placeholder="Key">
+        <input type="text" class="param-value" placeholder="Value">
+        <button class="btn-remove" title="Remove">×</button>
+    `;
+    queryParamsContainer.appendChild(newRow);
+    attachRemoveListener(newRow.querySelector(".btn-remove"));
+});
+
+// Add new header row
+addHeaderBtn.addEventListener("click", () => {
+    const newRow = document.createElement("div");
+    newRow.className = "param-row";
+    newRow.innerHTML = `
+        <input type="checkbox" class="param-enabled" checked>
+        <input type="text" class="param-key" placeholder="Key">
+        <input type="text" class="param-value" placeholder="Value">
+        <button class="btn-remove" title="Remove">×</button>
+    `;
+    headersContainer.appendChild(newRow);
+    attachRemoveListener(newRow.querySelector(".btn-remove"));
+});
+
+// Remove parameter/header row
+function attachRemoveListener(button) {
+    button.addEventListener("click", function () {
+        const container = this.closest('.params-container');
+        const rows = container.querySelectorAll(".param-row");
+        if (rows.length > 1) {
+            this.parentElement.remove();
+        } else {
+            // Keep at least one row but clear it
+            this.parentElement.querySelector(".param-key").value = "";
+            this.parentElement.querySelector(".param-value").value = "";
+            this.parentElement.querySelector(".param-enabled").checked = true;
+        }
+    });
+}
+
+// Attach remove listeners to initial rows
+document.querySelectorAll(".btn-remove").forEach(btn => attachRemoveListener(btn));
+
+// Collect query parameters
+function getQueryParams() {
+    const params = [];
+    const rows = queryParamsContainer.querySelectorAll(".param-row");
+    rows.forEach(row => {
+        const enabled = row.querySelector(".param-enabled").checked;
+        const key = row.querySelector(".param-key").value.trim();
+        const value = row.querySelector(".param-value").value.trim();
+        if (key) { // Only add if key is not empty
+            params.push({ key, value, enabled });
+        }
+    });
+    return params;
+}
+
+// Collect headers
+function getHeaders() {
+    const headers = [];
+    const rows = headersContainer.querySelectorAll(".param-row");
+    rows.forEach(row => {
+        const enabled = row.querySelector(".param-enabled").checked;
+        const key = row.querySelector(".param-key").value.trim();
+        const value = row.querySelector(".param-value").value.trim();
+        if (key) { // Only add if key is not empty
+            headers.push({ key, value, enabled });
+        }
+    });
+    return headers;
+}
+
 // Send request
 sendBtn.addEventListener("click", send);
 
 async function send() {
-    let auth = null;
+    // Clear empty state first
+    const emptyState = document.querySelector(".empty-state");
+    if (emptyState) {
+        emptyState.style.display = "none";
+    }
 
     // Validate URL first
     if (!url.value || url.value.trim() === "") {
         statusIndicator.className = "status-indicator error";
         statusText.textContent = "Validation Error";
-        responseBodyEl.textContent = "Error: URL is required";
-        responseHeadersEl.textContent = "";
-
-        // Clear empty state
-        const emptyState = document.querySelector(".empty-state");
-        if (emptyState) {
-            emptyState.style.display = "none";
-        }
+        responseBodyEl.innerHTML = '<code class="response-body">Error: URL is required</code>';
+        responseHeadersEl.innerHTML = '<code class="response-body">No headers</code>';
         return;
     }
+
+    let auth = null;
 
     if (authTypeEl.value === "basic") {
         auth = {
@@ -109,14 +194,8 @@ async function send() {
         } catch (e) {
             statusIndicator.className = "status-indicator error";
             statusText.textContent = "JSON Parse Error";
-            responseBodyEl.textContent = "Invalid JSON: " + e.message;
-            responseHeadersEl.textContent = "";
-
-            // Clear empty state
-            const emptyState = document.querySelector(".empty-state");
-            if (emptyState) {
-                emptyState.style.display = "none";
-            }
+            responseBodyEl.innerHTML = '<code class="response-body">Invalid JSON: ' + escapeHtml(e.message) + '</code>';
+            responseHeadersEl.innerHTML = '<code class="response-body">No headers</code>';
             return;
         }
     }
@@ -127,12 +206,6 @@ async function send() {
     statusIndicator.className = "status-indicator";
     statusText.textContent = "Loading...";
 
-    // Clear empty state
-    const emptyState = document.querySelector(".empty-state");
-    if (emptyState) {
-        emptyState.style.display = "none";
-    }
-
     try {
         const startTime = performance.now();
 
@@ -142,8 +215,8 @@ async function send() {
             body: JSON.stringify({
                 url: url.value,
                 method: method.value,
-                queryParams: [],
-                headers: [],
+                queryParams: getQueryParams(),
+                headers: getHeaders(),
                 body: jsonBody,
                 auth
             })
@@ -194,8 +267,8 @@ async function send() {
     } catch (err) {
         statusIndicator.className = "status-indicator error";
         statusText.textContent = "Request Failed";
-        responseBodyEl.textContent = "Request failed:\n" + err;
-        responseHeadersEl.textContent = "";
+        responseBodyEl.innerHTML = '<code class="response-body">Request failed:\n' + escapeHtml(String(err)) + '</code>';
+        responseHeadersEl.innerHTML = '<code class="response-body">No headers</code>';
     } finally {
         sendBtn.disabled = false;
         sendBtn.textContent = "Send Request";
