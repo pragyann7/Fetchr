@@ -16,6 +16,7 @@
 
         <div class="main-grid">
             <div class="section">
+                <!-- Request Endpoint -->
                 <div class="card">
                     <div class="card-header">
                         <h3>Request</h3>
@@ -38,69 +39,79 @@
                     <button id="sendBtn" class="btn-primary">Send Request</button>
                 </div>
 
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Query Parameters</h3>
-                        <button class="btn-add" id="addQueryParam">+ Add</button>
+                <!-- Request Tabs -->
+                <div class="card request-tabs-card">
+                    <div class="request-tabs">
+                        <button class="request-tab active" data-tab="params">Params</button>
+                        <button class="request-tab" data-tab="headers">Headers</button>
+                        <button class="request-tab" data-tab="auth">Auth</button>
+                        <button class="request-tab" data-tab="body">Body</button>
                     </div>
-                    
-                    <div id="queryParamsContainer" class="params-container">
-                        <div class="param-row">
-                            <input type="checkbox" class="param-enabled" checked>
-                            <input type="text" class="param-key" placeholder="Key">
-                            <input type="text" class="param-value" placeholder="Value">
-                            <button class="btn-remove" title="Remove">×</button>
+
+                    <!-- Query Parameters Tab -->
+                    <div class="request-tab-content active" id="tab-params">
+                        <div class="tab-inner">
+                            <div class="tab-actions">
+                                <button class="btn-add-small" id="addQueryParam">+ Add Parameter</button>
+                            </div>
+                            <div id="queryParamsContainer" class="params-container">
+                                <div class="param-row">
+                                    <input type="checkbox" class="param-enabled" checked title="Enable">
+                                    <input type="text" class="param-key" placeholder="Key">
+                                    <input type="text" class="param-value" placeholder="Value">
+                                    <button class="btn-remove" title="Remove">×</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Headers</h3>
-                        <button class="btn-add" id="addHeader">+ Add</button>
-                    </div>
-                    
-                    <div id="headersContainer" class="params-container">
-                        <div class="param-row">
-                            <input type="checkbox" class="param-enabled" checked>
-                            <input type="text" class="param-key" placeholder="Key">
-                            <input type="text" class="param-value" placeholder="Value">
-                            <button class="btn-remove" title="Remove">×</button>
+                    <!-- Headers Tab -->
+                    <div class="request-tab-content" id="tab-headers">
+                        <div class="tab-inner">
+                            <div class="tab-actions">
+                                <button class="btn-add-small" id="addHeader">+ Add Header</button>
+                            </div>
+                            <div id="headersContainer" class="params-container">
+                                <div class="param-row">
+                                    <input type="checkbox" class="param-enabled" checked title="Enable">
+                                    <input type="text" class="param-key" placeholder="Key">
+                                    <input type="text" class="param-value" placeholder="Value">
+                                    <button class="btn-remove" title="Remove">×</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Authentication</h3>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Auth Type</label>
-                        <select id="authType">
-                            <option value="none">No Authentication</option>
-                            <option value="basic">Basic Auth</option>
-                            <option value="bearer">Bearer Token</option>
-                        </select>
+                    <!-- Authentication Tab -->
+                    <div class="request-tab-content" id="tab-auth">
+                        <div class="tab-inner">
+                            <div class="form-group">
+                                <label class="form-label">Authentication Type</label>
+                                <select id="authType">
+                                    <option value="none">No Authentication</option>
+                                    <option value="basic">Basic Auth</option>
+                                    <option value="bearer">Bearer Token</option>
+                                </select>
+                            </div>
+
+                            <div class="auth-fields">
+                                <input id="username" type="text" placeholder="Username">
+                                <input id="password" type="password" placeholder="Password">
+                                <input id="token" type="text" placeholder="Bearer Token">
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="auth-fields">
-                        <input id="username" type="text" placeholder="Username">
-                        <input id="password" type="password" placeholder="Password">
-                        <input id="token" type="text" placeholder="Bearer Token">
+                    <!-- Body Tab -->
+                    <div class="request-tab-content" id="tab-body">
+                        <div class="tab-inner">
+                            <textarea id="body" placeholder='{  "key": "example",  "data": "value" }'></textarea>
+                        </div>
                     </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Request Body</h3>
-                        <span class="badge">JSON</span>
-                    </div>
-                    
-                    <textarea id="body" placeholder='{ "key": "value",  "data": "example" }'></textarea>
                 </div>
             </div>
 
+            <!-- Response Section -->
             <div class="section">
                 <div class="card response-card">
                     <div class="card-header">
@@ -116,7 +127,7 @@
                         <button class="tab-btn" data-tab="headers">Headers</button>
                     </div>
 
-                    <div id="tab-body" class="tab-content">
+                    <div id="res-tab-body" class="tab-content">
                         <div class="empty-state">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -125,7 +136,7 @@
                         </div>
                         <pre id="response-body"></pre>
                     </div>
-                    <div id="tab-headers" class="tab-content" style="display:none;">
+                    <div id="res-tab-headers" class="tab-content" style="display:none;">
                         <pre id="response-headers"></pre>
                     </div>
                 </div>

@@ -80,7 +80,7 @@ addQueryParamBtn.addEventListener("click", () => {
     const newRow = document.createElement("div");
     newRow.className = "param-row";
     newRow.innerHTML = `
-        <input type="checkbox" class="param-enabled" checked>
+        <input type="checkbox" class="param-enabled" checked title="Enable">
         <input type="text" class="param-key" placeholder="Key">
         <input type="text" class="param-value" placeholder="Value">
         <button class="btn-remove" title="Remove">×</button>
@@ -94,7 +94,7 @@ addHeaderBtn.addEventListener("click", () => {
     const newRow = document.createElement("div");
     newRow.className = "param-row";
     newRow.innerHTML = `
-        <input type="checkbox" class="param-enabled" checked>
+        <input type="checkbox" class="param-enabled" checked title="Enable">
         <input type="text" class="param-key" placeholder="Key">
         <input type="text" class="param-value" placeholder="Value">
         <button class="btn-remove" title="Remove">×</button>
@@ -208,8 +208,10 @@ async function send() {
 
     try {
         const startTime = performance.now();
+        // const apiUrl = 'http://192.168.1.120'
+        const apiUrl = 'http://127.0.0.1'
 
-        const res = await fetch("http://127.0.0.1:9000/send/", {
+        const res = await fetch(`${apiUrl}:9000/send/`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -275,24 +277,48 @@ async function send() {
     }
 }
 
-// Tab switching logic
-const tabButtons = document.querySelectorAll(".tab-btn");
-const tabContents = document.querySelectorAll(".tab-content");
+// Request Tab Switching (Params / Headers / Auth / Body)
+const requestTabsContainer = document.querySelector('.request-tabs');
+if (requestTabsContainer) {
+    requestTabsContainer.addEventListener('click', (e) => {
+        const btn = e.target.closest('.request-tab');
+        if (!btn) return;
 
-tabButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
         const targetTab = btn.dataset.tab;
+        if (!targetTab) return;
 
-        // Remove active class from all buttons
-        tabButtons.forEach(b => b.classList.remove("active"));
+        // Remove active class from all request tabs
+        document.querySelectorAll('.request-tab').forEach(b => b.classList.remove('active'));
 
-        // Hide all tab contents
-        tabContents.forEach(c => {
-            c.style.display = "none";
-        });
+        // Hide all request tab contents
+        document.querySelectorAll('.request-tab-content').forEach(c => c.classList.remove('active'));
 
-        // Activate clicked tab
-        btn.classList.add("active");
-        document.getElementById("tab-" + targetTab).style.display = "block";
+        // Activate clicked button and show content
+        btn.classList.add('active');
+        const targetEl = document.getElementById('tab-' + targetTab);
+        if (targetEl) targetEl.classList.add('active');
     });
-});
+}
+
+// Response Tab Switching (Body / Headers)
+const responseTabsContainer = document.querySelector('.response-card .tabs');
+if (responseTabsContainer) {
+    responseTabsContainer.addEventListener('click', (e) => {
+        const btn = e.target.closest('.tab-btn');
+        if (!btn) return;
+
+        const targetTab = btn.dataset.tab;
+        if (!targetTab) return;
+
+        // Remove active class from all response tabs
+        document.querySelectorAll('.response-card .tabs .tab-btn').forEach(b => b.classList.remove('active'));
+
+        // Hide all response tab contents
+        document.querySelectorAll('.response-card .tab-content').forEach(c => c.style.display = 'none');
+
+        // Activate clicked button and show content
+        btn.classList.add('active');
+        const targetEl = document.getElementById('res-tab-' + targetTab);
+        if (targetEl) targetEl.style.display = 'block';
+    });
+}
