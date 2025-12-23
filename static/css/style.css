@@ -126,10 +126,6 @@ body {
     margin-bottom: 16px;
 }
 
-.request-tab-content .form-group {
-    margin-bottom: 0;
-}
-
 .form-label {
     display: block;
     font-size: 13px;
@@ -180,8 +176,9 @@ textarea {
 }
 
 #body {
-    min-height: 180px;
-    height: 180px;
+    min-height: 240px;
+    height: 240px;
+    margin-top: 0;
 }
 
 select {
@@ -212,9 +209,16 @@ select {
 
 .param-row {
     display: grid;
-    grid-template-columns: 1fr 1fr 36px;
+    grid-template-columns: 32px 1fr 1fr 36px;
     gap: 8px;
     align-items: center;
+}
+
+.param-enabled {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--accent);
 }
 
 .param-key,
@@ -227,6 +231,7 @@ select {
     border-radius: 6px;
     font-size: 13px;
     transition: all 0.2s ease;
+    min-width: 0;
 }
 
 .param-key:focus,
@@ -234,23 +239,6 @@ select {
     outline: none;
     border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.12);
-}
-
-.btn-add {
-    background: rgba(16, 185, 129, 0.1);
-    color: var(--success);
-    border: 1px solid rgba(16, 185, 129, 0.3);
-    padding: 4px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.btn-add:hover {
-    background: rgba(16, 185, 129, 0.2);
-    border-color: rgba(16, 185, 129, 0.5);
 }
 
 .btn-remove {
@@ -338,48 +326,39 @@ select {
     color: white;
 }
 
-/* Request Tabs */
-.request-tabs {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 16px;
-    padding: 4px;
-    background: var(--bg-secondary);
-    border-radius: 8px;
+.tab-content-request {
+    padding: 16px 0;
 }
 
-.request-tab-btn {
-    flex: 1;
-    background: transparent;
-    border: none;
-    padding: 8px 12px;
-    color: var(--text-secondary);
-    font-size: 13px;
-    font-weight: 500;
+.params-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 12px;
+}
+
+.btn-add-small {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    padding: 6px 14px;
     border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
-.request-tab-btn:hover {
-    color: var(--text-primary);
-    background: rgba(15, 76, 129, 0.06);
+.btn-add-small:hover {
+    background: rgba(16, 185, 129, 0.2);
+    border-color: rgba(16, 185, 129, 0.5);
 }
 
-.request-tab-btn.active {
-    background: var(--accent);
-    color: white;
+.auth-content {
+    padding-top: 8px;
 }
 
-.request-tab-content {
-    min-height: 200px;
-}
-
-.tab-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
+.form-group-tab {
+    margin-bottom: 16px;
 }
 
 .tab-content {
@@ -392,6 +371,59 @@ select {
     overflow: auto;
     word-wrap: break-word;
     overflow-wrap: break-word;
+}
+
+/* Request tab container and buttons */
+.request-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+    padding: 4px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+}
+
+.request-tab {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 8px 16px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.request-tab:hover {
+    color: var(--text-primary);
+    background: rgba(15, 76, 129, 0.06);
+}
+
+.request-tab.active {
+    background: var(--accent);
+    color: white;
+}
+
+/* Request tab content */
+.request-tab-content {
+    display: none;
+    animation: fadeIn 0.2s ease;
+}
+
+.request-tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .tab-content pre {
@@ -455,24 +487,7 @@ select {
     flex: 1;
 }
 
-.tab-content::-webkit-scrollbar {
-    width: 8px;
-}
-
-.tab-content::-webkit-scrollbar-track {
-    background: var(--bg-primary);
-    border-radius: 4px;
-}
-
-.tab-content::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: 4px;
-}
-
-.tab-content::-webkit-scrollbar-thumb:hover {
-    background: rgba(15, 76, 129, 0.45);
-}
-
+/* Status Indicator Styles - IMPORTANT: Keep this order */
 .status-indicator {
     display: inline-flex;
     align-items: center;
@@ -495,6 +510,7 @@ select {
     animation: pulse 2s ease-in-out infinite;
 }
 
+/* Success State */
 .status-indicator.success {
     background: rgba(16, 185, 129, 0.15) !important;
     border: 1px solid rgba(16, 185, 129, 0.4) !important;
@@ -505,6 +521,7 @@ select {
     background: #10b981 !important;
 }
 
+/* Error State */
 .status-indicator.error {
     background: rgba(239, 68, 68, 0.15) !important;
     border: 1px solid rgba(239, 68, 68, 0.5) !important;
@@ -531,6 +548,10 @@ select {
     min-height: 600px;
     display: flex;
     flex-direction: column;
+}
+
+.request-card {
+    min-height: 350px;
 }
 
 .empty-state {
