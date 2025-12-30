@@ -7,5 +7,3 @@ db.sqlite3
 .DS_Store
 .env
 .vscode/
-fetchr_start.command
-fetchr_stop.command
